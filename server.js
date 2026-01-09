@@ -18,7 +18,7 @@ app.use(express.raw({ type: "*/*" }));
 
 // Forward ALL incoming requests to your Replit app
 app.all("*", async (req, res) => {
-  const targetUrl = "https://python-blank-script--bostonrobertj.replit.app" + req.url;
+  const targetUrl = "https://workspace.bostonrobertj.replit.app" + req.url;
 
   try {
     const response = await fetch(targetUrl, {
