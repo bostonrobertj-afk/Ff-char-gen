@@ -28,5 +28,25 @@ app.all("*", async (req, res) => {
       agent: httpsAgent, // use our relaxed SSL agent
     });
 
-    // Copy status and headers from the Replit
+    // Copy status and headers from the Replit response
+    res.status(response.status);
+    response.headers.forEach((value, key) => res.set(key, value));
+
+    // Stream the response body directly back to the client
+    if (response.body) {
+      response.body.pipe(res);
+    } else {
+      res.end();
+    }
+  } catch (error) {
+    console.error("Proxy error:", error.message);
+    res.status(502).json({ error: error.message });
+  }
+});
+
+// Render assigns its own PORT environment variable
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Fateforge proxy running on port ${PORT}`);
+});
 
